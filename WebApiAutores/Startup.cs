@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace WebApiAutores
 {
@@ -23,7 +24,11 @@ namespace WebApiAutores
                 options.SubstituteApiVersionInUrl = true;
             });
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(configure =>
+            {
+                configure.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                configure.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            });
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("defaultConection")));
