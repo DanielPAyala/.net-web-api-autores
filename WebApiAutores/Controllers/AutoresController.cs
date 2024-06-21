@@ -1,16 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiAutores.Entities;
 
 namespace WebApiAutores.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
     public class AutoresController(ApplicationDbContext context) : ControllerBase
     {
-        // private readonly ApplicationDbContext _context = context;
-
         [HttpGet]
         public async Task<ActionResult<List<Autor>>> Get()
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Asp.Versioning;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApiAutores
 {
@@ -8,6 +9,20 @@ namespace WebApiAutores
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApiVersioning(options =>
+            {
+                options.DefaultApiVersion = new Asp.Versioning.ApiVersion(1);
+                options.ReportApiVersions = true;
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.ApiVersionReader = ApiVersionReader.Combine(
+                    new UrlSegmentApiVersionReader(),
+                    new HeaderApiVersionReader("X-Api-Version"));
+            }).AddApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'V";
+                options.SubstituteApiVersionInUrl = true;
+            });
+
             services.AddControllers();
 
             services.AddDbContext<ApplicationDbContext>(options =>
