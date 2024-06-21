@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using WebApiAutores.Entities;
 
 namespace WebApiAutores
 {
@@ -26,8 +27,10 @@ namespace WebApiAutores
 
             services.AddControllers().AddJsonOptions(configure =>
             {
-                configure.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 configure.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                configure.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+                configure.JsonSerializerOptions.WriteIndented = true;
+                configure.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
