@@ -12,6 +12,7 @@ namespace WebApiAutores.Controllers
     public class AutoresController(ApplicationDbContext context) : ControllerBase
     {
         [HttpGet]
+        [HttpGet("/listado")]
         public async Task<ActionResult<List<Autor>>> Get()
         {
             return await context.Autores.Include(x => x.Libros).ToListAsync();
@@ -20,7 +21,13 @@ namespace WebApiAutores.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Autor>> Get(int id)
         {
-            return await context.Autores.FindAsync(id);
+            var autor = await context.Autores.FindAsync(id);
+
+            if (autor is null)
+            {
+                return NotFound();
+            }
+            return autor;
         }
 
         [HttpPost]
